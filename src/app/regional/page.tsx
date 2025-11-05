@@ -1,63 +1,69 @@
 // src/app/regional/page.tsx
-import React from "react";
-import { fetchCSV, dataSources } from "../../lib/fetchData";
-import { CountryLineCompare } from "../../components/ProgramCharts";
-import InsightBox from "../../components/InsightBox";
+import Card from "@/components/Card";
+import { getAllData } from "@/lib/fetchData";
+import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recharts";
 
-async function loadAll() {
-  const [aice, pf, va] = await Promise.all([
-    fetchCSV(dataSources.AiCE),
-    fetchCSV(dataSources.PF),
-    fetchCSV(dataSources.VA),
-  ]);
-  return { aice, pf, va };
-}
+export const revalidate = 3600;
 
-export default async function Page() {
-  const { aice, pf, va } = await loadAll();
+export default async function Regional() {
+  const { aice, pf, va } = await getAllData();
+  const all = [...aice, ...pf, ...va];
 
-  // Build per-country aggregated graduation %
-  const countries = Array.from(new Set(aice.map((r: any) => r.Country)));
-  const data = countries.map((country: string) => {
-    const a = aice.filter((r: any) => r.Country === country);
-    const p = pf.filter((r: any) => r.Country === country);
-    const v = va.filter((r: any) => r.Country === country);
-    const toNum = (arr: any[]) => {
-      const en = arr.reduce((s, row) => s + Number(row.Enrolled || 0), 0);
-      const gr = arr.reduce((s, row) => s + Number(row.Graduated || 0), 0);
-      return en === 0 ? 0 : Math.round((gr / en) * 100 * 10) / 10;
-    };
+  const countries = [...new Set(all.map(r => r.Country))].sort();
+  const [selected, setSelected] = useState("All");
+
+  // Server-side aggregation
+  const data = countries.map(c => {
+    const rows = all.filter(r => r.Country === c);
     return {
-      country,
-      AiCE: toNum(a),
-      PF: toNum(p),
-      VA: toNum(v),
+      Country: c,
+      Enrolled: rows.reduce((s,r)=>s+r.Enrolled,0),
+      Activated: rows.reduce((s,r)=>s+r.Activated,0),
+      Graduated: rows.reduce((s,r)=>s+r.Graduated,0),
     };
-  });
-
-  const series = [
-    { key: "AiCE", color: "#60a5fa" },
-    { key: "PF", color: "#f97316" },
-    { key: "VA", color: "#16a34a" },
-  ];
+  }).sort((a,b) => b.Enrolled - a.Enrolled);
 
   return (
-    <main>
-      <h2 className="text-2xl font-bold mb-4">Regional Graduation Performance</h2>
-      <div className="grid grid-cols-3 gap-6">
-        <div className="col-span-2">
-          <CountryLineCompare data={data as any} xKey="country" series={series} title="Graduation % by Country" />
+    <div className="space-y-8">
+      <h1 className="text-4xl font-bold text-alxRed">Regional Performance</h1>
+
+      <Card title="Country Leaderboard">
+        <div className="overflow-x-auto">
+          <table className="w-full text-left">
+            <thead className="border-b border-gray-700">
+              <tr>
+                <th className="pb-3">Country</th>
+                <th className="pb-3 text-right">Enrolled</th>
+                <th className="pb-3 text-right">Activation</th>
+                <th className="pb-3 text-right">Graduation</th>
+              </tr>
+            </thead>
+            <tbody>
+              {data.slice(0, 10).map((row) => (
+                <tr key={row.Country} className="border-b border-gray-800">
+                  <td className="py-3">{row.Country}</td>
+                  <td className="py-3 text-right">{row.Enrolled.toLocaleString()}</td>
+                  <td className="py-3 text-right">{Math.round(row.Activated/row.Enrolled*100)}%</td>
+                  <td className="py-3 text-right">{Math.round(row.Graduated/row.Enrolled*100)}%</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
-        <aside>
-          <InsightBox
-            title="Regional takeaways"
-            bullets={[
-              "Kenya and Nigeria are consistent top contributors to graduation volumes and efficiency.",
-              "Small markets like Rwanda and Ghana show strong conversion — use them as engagement labs.",
-            ]}
-          />
-        </aside>
-      </div>
-    </main>
+      </Card>
+
+      <Card title="Funnel by Country">
+        <ResponsiveContainer width="100%" height={400}>
+          <BarChart data={data.slice(0, 8)}>
+            <XAxis dataKey="Country" />
+            <YAxis />
+            <Tooltip />
+            <Bar dataKey="Enrolled" fill="#4B5563" />
+            <Bar dataKey="Activated" fill="#10B981" />
+            <Bar dataKey="Graduated" fill="#E22D2D" />
+          </BarChart>
+        </ResponsiveContainer>
+      </Card>
+    </div>
   );
 }
