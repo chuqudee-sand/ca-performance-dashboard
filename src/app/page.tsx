@@ -43,6 +43,8 @@ export default async function Overview() {
     { name: "VA",   value: va.reduce((s, r) => s + r.Enrolled, 0),   color: "#10B981" },
   ];
 
+  const totalForPie = programData.reduce((sum, entry) => sum + entry.value, 0);
+
   const funnelData = [
     { stage: "Enrolled",  value: totalEnrolled },
     { stage: "Activated", value: totalActivated },
@@ -88,10 +90,9 @@ export default async function Overview() {
                 cx="50%"
                 cy="50%"
                 outerRadius={90}
-                label={(props) => {
+                label={(props: any) => {
                   const { payload, value } = props;
-                  const total = programData.reduce((sum, entry) => sum + entry.value, 0);
-                  const percent = total > 0 ? (value / total) * 100 : 0;
+                  const percent = totalForPie > 0 ? ((value as number) / totalForPie) * 100 : 0;
                   return `${payload.name} ${percent.toFixed(0)}%`;
                 }}
               >
