@@ -1,0 +1,9 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Background + default text */
+body {
+  @apply bg-darkBg text-darkText;
+  font-family: system-ui, sans-serif;
+}
