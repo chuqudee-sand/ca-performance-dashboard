@@ -16,7 +16,7 @@ export default function RootLayout({
         <nav className="flex gap-6 mb-10 text-lg border-b border-alxRed pb-4">
           <a href="/" className="hover:text-alxRed transition-colors">Overview</a>
           <a href="/regional" className="hover:text-alxRed transition-colors">Regional Performance</a>
-          <a href="/sprint" className="hover:text-alxRed transition-colors">Sprint Trend</a>
+          <a href="/sprint" className="hover:text-alxRed transition-colors">Sprint Trends</a>
           <a href="/cohort" className="hover:text-alxRed transition-colors">Cohort Explorer</a>
         </nav>
         <main>{children}</main>
