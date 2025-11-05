@@ -12,16 +12,15 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className="dark">
-      <body className="bg-darkBg text-darkText p-6">
+      <body className="bg-darkBg text-darkText p-6 min-h-screen">
         <nav className="flex gap-6 mb-10 text-lg border-b border-alxRed pb-4">
-          <a href="/" className="hover:text-alxRed">Overview</a>
-          <a href="/regional" className="hover:text-alxRed">Regional Performance</a>
-          <a href="/sprint" className="hover:text-alxRed">Sprint Trends</a>
-          <a href="/cohort" className="hover:text-alxRed">Cohort Explorer</a>
+          <a href="/" className="hover:text-alxRed transition-colors">Overview</a>
+          <a href="/regional" className="hover:text-alxRed transition-colors">Regional Performance</a>
+          <a href="/sprint" className="hover:text-alxRed transition-colors">Sprint Trends</a>
+          <a href="/cohort" className="hover:text-alxRed transition-colors">Cohort Explorer</a>
         </nav>
-        {children}
+        <main>{children}</main>
       </body>
     </html>
   );
 }
-
