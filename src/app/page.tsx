@@ -1,35 +1,52 @@
 // src/app/page.tsx
 import Card from "@/components/Card";
 import { getAllData } from "@/lib/fetchData";
-import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from "recharts";
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  Tooltip,
+  ResponsiveContainer,
+  PieChart,
+  Pie,
+  Cell,
+} from "recharts";
 
 export const revalidate = 3600; // Refresh every hour
 
 export default async function Overview() {
   const { aice, pf, va, csat } = await getAllData();
 
-  const totalEnrolled = aice.reduce((s, r) => s + r.Enrolled, 0) +
-                        pf.reduce((s, r) => s + r.Enrolled, 0) +
-                        va.reduce((s, r) => s + r.Enrolled, 0);
+  // === Aggregate Totals ===
+  const totalEnrolled =
+    aice.reduce((s, r) => s + r.Enrolled, 0) +
+    pf.reduce((s, r) => s + r.Enrolled, 0) +
+    va.reduce((s, r) => s + r.Enrolled, 0);
 
-  const totalActivated = aice.reduce((s, r) => s + r.Activated, 0) +
-                         pf.reduce((s, r) => s + r.Activated, 0) +
-                         va.reduce((s, r) => s + r.Activated, 0);
+  const totalActivated =
+    aice.reduce((s, r) => s + r.Activated, 0) +
+    pf.reduce((s, r) => s + r.Activated, 0) +
+    va.reduce((s, r) => s + r.Activated, 0);
 
-  const totalGraduated = aice.reduce((s, r) => s + r.Graduated, 0) +
-                         pf.reduce((s, r) => s + r.Graduated, 0) +
-                         va.reduce((s, r) => s + r.Graduated, 0);
+  const totalGraduated =
+    aice.reduce((s, r) => s + r.Graduated, 0) +
+    pf.reduce((s, r) => s + r.Graduated, 0) +
+    va.reduce((s, r) => s + r.Graduated, 0);
 
+  // === CSAT & NPS ===
   const avgCSAT = (csat.reduce((a, b) => a + b.CSAT, 0) / csat.length).toFixed(1);
   const avgNPS = Math.round(csat.reduce((a, b) => a + b.NPS, 0) / csat.length);
   const latestCSAT = csat[csat.length - 1];
 
+  // === Program Enrollment Pie Chart ===
   const programData = [
     { name: "AiCE", value: aice.reduce((s, r) => s + r.Enrolled, 0), color: "#E22D2D" },
     { name: "PF",   value: pf.reduce((s, r) => s + r.Enrolled, 0),   color: "#8B5CF6" },
     { name: "VA",   value: va.reduce((s, r) => s + r.Enrolled, 0),   color: "#10B981" },
   ];
 
+  // === Funnel Bar Chart ===
   const funnelData = [
     { stage: "Enrolled",  value: totalEnrolled },
     { stage: "Activated", value: totalActivated },
@@ -37,7 +54,7 @@ export default async function Overview() {
   ];
 
   return (
-    <div className="max-w-7xl mx-auto space-y-8">
+    <div className="max-w-7xl mx-auto space-y-8 p-4">
       <h1 className="text-4xl font-bold text-alxRed">CA Performance Dashboard</h1>
 
       {/* KPI Tiles */}
@@ -64,6 +81,7 @@ export default async function Overview() {
 
       {/* Charts */}
       <div className="grid md:grid-cols-2 gap-6">
+        {/* Enrollment by Program - Pie Chart */}
         <Card title="Enrollment by Program">
           <ResponsiveContainer width="100%" height={280}>
             <PieChart>
@@ -74,29 +92,33 @@ export default async function Overview() {
                 cx="50%"
                 cy="50%"
                 outerRadius={90}
-                label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+                label={(
+                  entry: { name: string; percent: number }
+                ) => `${entry.name} ${(entry.percent * 100).toFixed(0)}%`}
               >
                 {programData.map((entry, i) => (
-                  <Cell key={i} fill={entry.color} />
+                  <Cell key={`cell-${i}`} fill={entry.color} />
                 ))}
               </Pie>
-              <Tooltip formatter={(v: number) => v.toLocaleString()} />
+              <Tooltip formatter={(value: number) => value.toLocaleString()} />
             </PieChart>
           </ResponsiveContainer>
         </Card>
 
+        {/* Overall Funnel - Bar Chart */}
         <Card title="Overall Funnel">
           <ResponsiveContainer width="100%" height={280}>
             <BarChart data={funnelData}>
               <XAxis dataKey="stage" />
               <YAxis />
-              <Tooltip formatter={(v: number) => v.toLocaleString()} />
+              <Tooltip formatter={(value: number) => value.toLocaleString()} />
               <Bar dataKey="value" fill="#E22D2D" radius={[8, 8, 0, 0]} />
             </BarChart>
           </ResponsiveContainer>
         </Card>
       </div>
 
+      {/* Key Insights */}
       <Card title="Key Insights">
         <ul className="space-y-2 text-darkText">
           <li>AiCE dominates enrollment in Nigeria and Kenya</li>
