@@ -13,12 +13,11 @@ import {
   Cell,
 } from "recharts";
 
-export const revalidate = 3600; // Refresh every hour
+export const revalidate = 3600;
 
 export default async function Overview() {
   const { aice, pf, va, csat } = await getAllData();
 
-  // === Aggregate Totals ===
   const totalEnrolled =
     aice.reduce((s, r) => s + r.Enrolled, 0) +
     pf.reduce((s, r) => s + r.Enrolled, 0) +
@@ -34,19 +33,16 @@ export default async function Overview() {
     pf.reduce((s, r) => s + r.Graduated, 0) +
     va.reduce((s, r) => s + r.Graduated, 0);
 
-  // === CSAT & NPS ===
   const avgCSAT = (csat.reduce((a, b) => a + b.CSAT, 0) / csat.length).toFixed(1);
   const avgNPS = Math.round(csat.reduce((a, b) => a + b.NPS, 0) / csat.length);
   const latestCSAT = csat[csat.length - 1];
 
-  // === Program Enrollment Pie Chart ===
   const programData = [
     { name: "AiCE", value: aice.reduce((s, r) => s + r.Enrolled, 0), color: "#E22D2D" },
     { name: "PF",   value: pf.reduce((s, r) => s + r.Enrolled, 0),   color: "#8B5CF6" },
     { name: "VA",   value: va.reduce((s, r) => s + r.Enrolled, 0),   color: "#10B981" },
   ];
 
-  // === Funnel Bar Chart ===
   const funnelData = [
     { stage: "Enrolled",  value: totalEnrolled },
     { stage: "Activated", value: totalActivated },
@@ -81,7 +77,7 @@ export default async function Overview() {
 
       {/* Charts */}
       <div className="grid md:grid-cols-2 gap-6">
-        {/* Enrollment by Program - Pie Chart */}
+        {/* Enrollment by Program */}
         <Card title="Enrollment by Program">
           <ResponsiveContainer width="100%" height={280}>
             <PieChart>
@@ -92,33 +88,35 @@ export default async function Overview() {
                 cx="50%"
                 cy="50%"
                 outerRadius={90}
-                label={(
-                  entry: { name: string; percent: number }
-                ) => `${entry.name} ${(entry.percent * 100).toFixed(0)}%`}
+                label={(props) => {
+                  const { payload, value } = props;
+                  const total = programData.reduce((sum, entry) => sum + entry.value, 0);
+                  const percent = total > 0 ? (value / total) * 100 : 0;
+                  return `${payload.name} ${percent.toFixed(0)}%`;
+                }}
               >
                 {programData.map((entry, i) => (
                   <Cell key={`cell-${i}`} fill={entry.color} />
                 ))}
               </Pie>
-              <Tooltip formatter={(value: number) => value.toLocaleString()} />
+              <Tooltip formatter={(v: number) => v.toLocaleString()} />
             </PieChart>
           </ResponsiveContainer>
         </Card>
 
-        {/* Overall Funnel - Bar Chart */}
+        {/* Overall Funnel */}
         <Card title="Overall Funnel">
           <ResponsiveContainer width="100%" height={280}>
             <BarChart data={funnelData}>
               <XAxis dataKey="stage" />
               <YAxis />
-              <Tooltip formatter={(value: number) => value.toLocaleString()} />
+              <Tooltip formatter={(v: number) => v.toLocaleString()} />
               <Bar dataKey="value" fill="#E22D2D" radius={[8, 8, 0, 0]} />
             </BarChart>
           </ResponsiveContainer>
         </Card>
       </div>
 
-      {/* Key Insights */}
       <Card title="Key Insights">
         <ul className="space-y-2 text-darkText">
           <li>AiCE dominates enrollment in Nigeria and Kenya</li>
