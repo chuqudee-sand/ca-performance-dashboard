@@ -2,8 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Background + default text */
+/* Remove the @apply and just set font-family */
 body {
-  @apply bg-darkBg text-darkText;
   font-family: system-ui, sans-serif;
 }
