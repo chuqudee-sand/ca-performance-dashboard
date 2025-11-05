@@ -1,20 +1,27 @@
 // src/app/regional/page.tsx
+"use client";  // ← ADD THIS FIRST LINE
+
 import Card from "@/components/Card";
 import { getAllData } from "@/lib/fetchData";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recharts";
+import { useState } from "react";  // ← Import useState
 
 export const revalidate = 3600;
 
-export default async function Regional() {
-  const { aice, pf, va } = await getAllData();
+export default function Regional() {
+  const { aice, pf, va } = await getAllData();  // ← This is still server-side!
   const all = [...aice, ...pf, ...va];
 
   const countries = [...new Set(all.map(r => r.Country))].sort();
-  const [selected, setSelected] = useState("All");
+  const [selected, setSelected] = useState("All");  // ← Now allowed
 
-  // Server-side aggregation
+  // Filter data based on selection
+  const filtered = selected === "All" 
+    ? all 
+    : all.filter(r => r.Country === selected);
+
   const data = countries.map(c => {
-    const rows = all.filter(r => r.Country === c);
+    const rows = filtered.filter(r => r.Country === c);
     return {
       Country: c,
       Enrolled: rows.reduce((s,r)=>s+r.Enrolled,0),
@@ -27,7 +34,21 @@ export default async function Regional() {
     <div className="space-y-8">
       <h1 className="text-4xl font-bold text-alxRed">Regional Performance</h1>
 
-      <Card title="Country Leaderboard">
+      {/* Country Filter */}
+      <Card title="Filter by Country">
+        <select 
+          value={selected} 
+          onChange={(e) => setSelected(e.target.value)}
+          className="w-full max-w-xs p-2 bg-darkCard border border-gray-700 rounded text-darkText"
+        >
+          <option value="All">All Countries</option>
+          {countries.map(c => (
+            <option key={c} value={c}>{c}</option>
+          ))}
+        </select>
+      </Card>
+
+      <Card title="Leaderboard">
         <div className="overflow-x-auto">
           <table className="w-full text-left">
             <thead className="border-b border-gray-700">
