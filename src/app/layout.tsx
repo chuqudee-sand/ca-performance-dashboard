@@ -17,7 +17,7 @@ export default function RootLayout({
           <a href="/" className="hover:text-alxRed transition-colors">Overview</a>
           <a href="/programs" className="hover:text-alxRed transition-colors">Programs</a>
           <a href="/regional" className="hover:text-alxRed transition-colors">Regional Performance</a>
-          <a href="/sprint" className="hover:text-alxRed transition-colors">Sprint Trends</a>
+          <a href="/sprint" className="hover:text-alxRed transition-colors">Sprint Trend</a>
           <a href="/cohort" className="hover:text-alxRed transition-colors">Cohort Explorer</a>
         </nav>
         <main>{children}</main>
