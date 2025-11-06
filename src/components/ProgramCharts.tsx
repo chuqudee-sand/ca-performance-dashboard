@@ -1,8 +1,8 @@
 // src/components/ProgramCharts.tsx
 import { getAllData } from "@/lib/fetchData";
-import ProgramSprintBar from "./ProgramSprintBar.tsx";     // ← .tsx
-import ProgramTrendLine from "./ProgramTrendLine.tsx";   // ← .tsx
-import InsightBox from "./InsightBox.tsx";
+import ProgramSprintBar from "./ProgramSprintBar";     // ← No .tsx
+import ProgramTrendLine from "./ProgramTrendLine";   // ← No .tsx
+import InsightBox from "./InsightBox";               // ← No .tsx
 
 export default async function ProgramCharts() {
   const { aice, pf, va } = await getAllData();
