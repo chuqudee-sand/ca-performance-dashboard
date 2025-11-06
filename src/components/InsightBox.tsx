@@ -13,7 +13,7 @@ export default function InsightBox({ title, bullets, className = "" }: Props) {
       <div className="text-alxRed font-semibold mb-2">{title}</div>
       <div className="text-sm text-gray-300 space-y-1">
         {bullets.map((b, i) => (
-          <p key={i}>{b}</p>
+          <p key={i} dangerouslySetInnerHTML={{ __html: b }} />
         ))}
       </div>
     </div>
