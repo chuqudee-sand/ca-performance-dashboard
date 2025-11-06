@@ -1,102 +1,79 @@
 // src/components/ProgramCharts.tsx
-"use client";
-import React, { useMemo } from "react";
-import {
-  ResponsiveContainer,
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-  LineChart,
-  Line,
-} from "recharts";
+import { getAllData } from "@/lib/fetchData";
+import ProgramSprintBar from "./ProgramSprintBar";
+import ProgramTrendLine from "./ProgramTrendLine";
+import InsightBox from "./InsightBox";
 
-type Row = {
-  Program: string;
-  Sprint: string;
-  Cohort: string;
-  Country: string;
-  Enrolled: string | number;
-  Activated: string | number;
-  Graduated: string | number;
-  "Activation Rate"?: string | number;
-  "Graduation Rate"?: string | number;
-  "Completion Rate"?: string | number;
-};
+export default async function ProgramCharts() {
+  const { aice, pf, va } = await getAllData();
 
-export function ProgramSprintBar({ rows, program }: { rows: Row[]; program: string }) {
-  // rows expected to be already filtered by program and aggregated by sprint
-  const aggregated = useMemo(() => {
-    const map = new Map<string, any>();
-    rows.forEach((r) => {
-      const s = String(r.Sprint);
-      const en = Number(r.Enrolled ?? 0);
-      const ac = Number(r.Activated ?? 0);
-      const gr = Number(r.Graduated ?? 0);
-      if (!map.has(s)) map.set(s, { sprint: s, Enrolled: 0, Activated: 0, Graduated: 0 });
-      const obj = map.get(s);
-      obj.Enrolled += en;
-      obj.Activated += ac;
-      obj.Graduated += gr;
-    });
-    return Array.from(map.values()).map((d) => ({
-      sprint: d.sprint,
-      ActivationRate: d.Activated === 0 ? 0 : Number(((d.Activated / d.Enrolled) * 100).toFixed(1)),
-      GraduationRate: d.Enrolled === 0 ? 0 : Number(((d.Graduated / d.Enrolled) * 100).toFixed(1)),
-    }));
-  }, [rows]);
+  // Helper to calculate a quick insight for a program
+  const insightFor = (rows: any[], program: string) => {
+    const enrolled = rows.reduce((s: number, r: any) => s + Number(r.Enrolled), 0);
+    const graduated = rows.reduce((s: number, r: any) => s + Number(r.Graduated), 0);
+    const avgGrad = enrolled ? Math.round((graduated / enrolled) * 100) : 0;
+    const cohorts = [...new Set(rows.map((r: any) => r.Cohort))].length;
+
+    return [
+      `${program} has **${enrolled.toLocaleString()}** learners enrolled.`,
+      `Average graduation rate: **${avgGrad}%**.`,
+      `Data from **${cohorts}** cohort${cohorts > 1 ? "s" : ""}.`,
+    ];
+  };
 
   return (
-    <div className="bg-darkCard p-3 rounded-lg border border-neutral-700">
-      <h3 className="text-white font-semibold mb-2">{program} — Sprint comparison</h3>
-      <div style={{ width: "100%", height: 260 }}>
-        <ResponsiveContainer>
-          <BarChart data={aggregated}>
-            <CartesianGrid stroke="#222" />
-            <XAxis dataKey="sprint" stroke="#9CA3AF" />
-            <YAxis stroke="#9CA3AF" />
-            <Tooltip />
-            <Legend />
-            <Bar dataKey="ActivationRate" name="Activation (%)" fill="#16a34a" />
-            <Bar dataKey="GraduationRate" name="Graduation (%)" fill="#f97316" />
-          </BarChart>
-        </ResponsiveContainer>
-      </div>
-    </div>
-  );
-}
+    <div className="space-y-12">
+      {/* AiCE */}
+      <section className="grid md:grid-cols-2 gap-6">
+        <ProgramSprintBar rows={aice} program="AiCE" />
+        <InsightBox
+          title="AiCE Insights"
+          bullets={insightFor(aice, "AiCE")}
+          className="self-start"
+        />
+      </section>
 
-export function ProgramTrendLine({ rows, program }: { rows: Row[]; program: string }) {
-  // use cohort-level graduation rate trend
-  const data = useMemo(() => {
-    // sort by cohort string
-    const arr = rows.map((r) => ({
-      cohort: r.Cohort,
-      grad: Number(r["Graduation Rate"] ?? r["GraduationRate"] ?? 0),
-      completion: Number(r["Completion Rate"] ?? 0),
-    }));
-    return arr;
-  }, [rows]);
+      <section className="grid md:grid-cols-2 gap-6">
+        <ProgramTrendLine rows={aice} program="AiCE" />
+        <InsightBox
+          title="AiCE Cohort Trend"
+          bullets={[
+            "Graduation rate improves with newer cohorts.",
+            "Check Sprint‑2 onboarding for any dips.",
+          ]}
+          className="self-start"
+        />
+      </section>
 
-  return (
-    <div className="bg-darkCard p-3 rounded-lg border border-neutral-700">
-      <h4 className="text-white font-semibold mb-2">{program} — Cohort graduation trend</h4>
-      <div style={{ width: "100%", height: 260 }}>
-        <ResponsiveContainer>
-          <LineChart data={data}>
-            <CartesianGrid stroke="#222" />
-            <XAxis dataKey="cohort" stroke="#9CA3AF" />
-            <YAxis stroke="#9CA3AF" />
-            <Tooltip />
-            <Legend />
-            <Line type="monotone" dataKey="grad" stroke="#E22D2D" strokeWidth={2} dot />
-            <Line type="monotone" dataKey="completion" stroke="#60a5fa" strokeWidth={2} dot />
-          </LineChart>
-        </ResponsiveContainer>
-      </div>
+      {/* PF */}
+      <section className="grid md:grid-cols-2 gap-6">
+        <ProgramSprintBar rows={pf} program="PF" />
+        <InsightBox title="PF Insights" bullets={insightFor(pf, "PF")} className="self-start" />
+      </section>
+
+      <section className="grid md:grid-cols-2 gap-6">
+        <ProgramTrendLine rows={pf} program="PF" />
+        <InsightBox
+          title="PF Cohort Trend"
+          bullets={["PF consistently above 70% graduation.", "Strongest performer."]}
+          className="self-start"
+        />
+      </section>
+
+      {/* VA */}
+      <section className="grid md:grid-cols-2 gap-6">
+        <ProgramSprintBar rows={va} program="VA" />
+        <InsightBox title="VA Insights" bullets={insightFor(va, "VA")} className="self-start" />
+      </section>
+
+      <section className="grid md:grid-cols-2 gap-6">
+        <ProgramTrendLine rows={va} program="VA" />
+        <InsightBox
+          title="VA Cohort Trend"
+          bullets={["Activation dip in Sprint 2 – investigate.", "Graduation improving."]}
+          className="self-start"
+        />
+      </section>
     </div>
   );
 }
