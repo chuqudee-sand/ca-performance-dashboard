@@ -1,7 +1,7 @@
 // src/app/page.tsx
 import Card from "@/components/Card";
 import ChartWrapper from "@/components/ChartWrapper";
-import { getAllData } from "@/lib/fetchData";
+import { getAllData, Row } from "@/lib/fetchData";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from "recharts";
 
 export const revalidate = 3600;
@@ -9,7 +9,8 @@ export const revalidate = 3600;
 export default async function Overview() {
   const { aice, pf, va, csat } = await getAllData();
 
-  const total = (arr: any[], key: string) => arr.reduce((s, r) => s + Number(r[key]), 0);
+  const total = (rows: Row[], key: keyof Row) => rows.reduce((s, r) => s + (r[key] as number), 0);
+
   const enrolled = total(aice, "Enrolled") + total(pf, "Enrolled") + total(va, "Enrolled");
   const activated = total(aice, "Activated") + total(pf, "Activated") + total(va, "Activated");
   const graduated = total(aice, "Graduated") + total(pf, "Graduated") + total(va, "Graduated");
@@ -27,6 +28,9 @@ export default async function Overview() {
     { stage: "Graduated", value: graduated },
   ];
 
+  const avgCSAT = csat.length ? (csat.reduce((s, r) => s + r.CSAT, 0) / csat.length).toFixed(1) : "0";
+  const avgNPS = csat.length ? Math.round(csat.reduce((s, r) => s + r.NPS, 0) / csat.length) : 0;
+
   return (
     <div className="space-y-8">
       <h1 className="text-4xl font-bold text-alxRed">CA Performance Dashboard</h1>
@@ -39,10 +43,10 @@ export default async function Overview() {
           <p className="text-3xl font-bold">{enrolled ? Math.round((graduated / enrolled) * 100) : 0}%</p>
         </Card>
         <Card title="CSAT">
-          <p className="text-3xl font-bold">{(csat.reduce((s, r) => s + r.CSAT, 0) / csat.length).toFixed(1)}/5</p>
+          <p className="text-3xl font-bold">{avgCSAT}/5</p>
         </Card>
         <Card title="NPS">
-          <p className="text-3xl font-bold">{Math.round(csat.reduce((s, r) => s + r.NPS, 0) / csat.length)}</p>
+          <p className="text-3xl font-bold">{avgNPS}</p>
         </Card>
       </div>
 
@@ -51,12 +55,21 @@ export default async function Overview() {
           <ChartWrapper>
             <ResponsiveContainer width="100%" height={280}>
               <PieChart>
-                <Pie data={programData} dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius={90}
+                <Pie
+                  data={programData}
+                  dataKey="value"
+                  nameKey="name"
+                  cx="50%"
+                  cy="50%"
+                  outerRadius={90}
                   label={(p: any) => {
                     const pct = totalPie ? ((p.value / totalPie) * 100).toFixed(0) : 0;
                     return `${p.payload.name} ${pct}%`;
-                  }}>
-                  {programData.map((e, i) => <Cell key={i} fill={e.color} />)}
+                  }}
+                >
+                  {programData.map((e, i) => (
+                    <Cell key={i} fill={e.color} />
+                  ))}
                 </Pie>
                 <Tooltip formatter={(v: number) => v.toLocaleString()} />
               </PieChart>
