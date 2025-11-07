@@ -1,0 +1,46 @@
+Program,Sprint,Cohort,Country,Enrolled,Activated,Graduated,Activation Rate,Graduation Rate,Completion Rate
+VA,Sprint 1,C7,Egypt,136,117,57,86,42,49
+VA,Sprint 1,C7,Ethiopia,172,153,85,89,49,56
+VA,Sprint 1,C7,Ghana,978,900,641,92,66,71
+VA,Sprint 1,C7,Kenya,1734,1613,1180,93,68,73
+VA,Sprint 1,C7,Morocco,415,344,183,83,44,53
+VA,Sprint 1,C7,Nigeria,6166,5796,4147,94,67,72
+VA,Sprint 1,C7,Rest of Africa,483,430,298,89,62,69
+VA,Sprint 1,C7,Rwanda,246,221,158,90,64,72
+VA,Sprint 1,C7,South Africa,312,287,187,92,60,65
+VA,Sprint 1,C8,Egypt,42,30,21,71,50,70
+VA,Sprint 1,C8,Ethiopia,79,65,40,82,51,62
+VA,Sprint 1,C8,Ghana,977,831,573,85,59,69
+VA,Sprint 1,C8,Kenya,1689,1497,1021,89,60,68
+VA,Sprint 1,C8,Morocco,359,283,132,79,37,47
+VA,Sprint 1,C8,Nigeria,2535,2314,1576,91,62,68
+VA,Sprint 1,C8,Rest of Africa,349,294,194,84,56,66
+VA,Sprint 1,C8,Rwanda,114,92,62,81,54,67
+VA,Sprint 1,C8,South Africa,288,239,149,83,52,62
+VA,Sprint 1,C9,Egypt,52,43,20,83,39,47
+VA,Sprint 1,C9,Ethiopia,141,120,70,85,50,58
+VA,Sprint 1,C9,Ghana,831,731,504,88,61,69
+VA,Sprint 1,C9,Kenya,1337,1186,864,89,65,73
+VA,Sprint 1,C9,Morocco,143,120,54,84,38,45
+VA,Sprint 1,C9,Nigeria,2879,2659,1794,92,62,68
+VA,Sprint 1,C9,Rest of Africa,344,289,177,84,52,61
+VA,Sprint 1,C9,Rwanda,127,108,75,85,59,69
+VA,Sprint 1,C9,South Africa,258,220,128,85,50,58
+VA,Sprint 2,C10,Egypt,133,101,48,76,36,48
+VA,Sprint 2,C10,Ethiopia,118,82,46,70,39,56
+VA,Sprint 2,C10,Ghana,944,776,483,82,51,62
+VA,Sprint 2,C10,Kenya,1428,1204,764,84,54,64
+VA,Sprint 2,C10,Morocco,146,98,53,67,36,54
+VA,Sprint 2,C10,Nigeria,2917,2517,1683,86,58,67
+VA,Sprint 2,C10,Rest of Africa,711,571,329,80,46,58
+VA,Sprint 2,C10,Rwanda,98,79,51,81,52,65
+VA,Sprint 2,C10,South Africa,271,214,115,79,42,54
+VA,Sprint 2,C11,Egypt,73,31,15,43,21,48
+VA,Sprint 2,C11,Ethiopia,178,95,58,53,33,61
+VA,Sprint 2,C11,Ghana,900,486,350,54,39,72
+VA,Sprint 2,C11,Kenya,1766,1150,802,65,45,70
+VA,Sprint 2,C11,Morocco,186,74,38,40,20,51
+VA,Sprint 2,C11,Nigeria,3067,1855,1350,61,44,73
+VA,Sprint 2,C11,Rest of Africa,1193,891,340,75,29,38
+VA,Sprint 2,C11,Rwanda,122,62,44,51,36,71
+VA,Sprint 2,C11,South Africa,287,156,96,54,33,62

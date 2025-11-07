@@ -1,0 +1,37 @@
+Program,Sprint,Cohort,Country,Enrolled,Activated,Graduated,Activation Rate,Graduation Rate,Completion Rate
+PF,Sprint 1,C7,Egypt,1570,1123,773,72,49,69
+PF,Sprint 1,C7,Ethiopia,1167,833,558,71,48,67
+PF,Sprint 1,C7,Ghana,2116,1667,1082,79,51,65
+PF,Sprint 1,C7,Kenya,3416,2717,1890,80,55,70
+PF,Sprint 1,C7,Morocco,2420,1591,830,66,34,52
+PF,Sprint 1,C7,Nigeria,4640,3683,2429,79,52,66
+PF,Sprint 1,C7,Rest of Africa,1217,905,547,74,45,60
+PF,Sprint 1,C7,Rwanda,898,665,440,74,49,66
+PF,Sprint 1,C7,South Africa,1564,1161,734,74,47,63
+PF,Sprint 1,C8,Egypt,674,470,333,70,49,71
+PF,Sprint 1,C8,Ethiopia,683,485,330,71,48,68
+PF,Sprint 1,C8,Ghana,1762,1313,847,75,48,65
+PF,Sprint 1,C8,Kenya,3814,2860,1741,75,46,61
+PF,Sprint 1,C8,Morocco,1863,1175,586,63,32,50
+PF,Sprint 1,C8,Nigeria,2578,1921,1173,75,46,61
+PF,Sprint 1,C8,Rest of Africa,861,617,362,72,42,59
+PF,Sprint 1,C8,Rwanda,400,276,185,69,46,67
+PF,Sprint 1,C8,South Africa,1838,1371,915,75,50,67
+PF,Sprint 2,C9,Egypt,836,794,467,95,56,59
+PF,Sprint 2,C9,Ethiopia,665,557,333,84,50,60
+PF,Sprint 2,C9,Ghana,2196,1748,1180,80,54,68
+PF,Sprint 2,C9,Kenya,3011,2595,1746,86,58,67
+PF,Sprint 2,C9,Morocco,2179,1536,711,71,33,46
+PF,Sprint 2,C9,Nigeria,2719,2284,1559,84,57,68
+PF,Sprint 2,C9,Rest of Africa,753,610,365,81,49,60
+PF,Sprint 2,C9,Rwanda,448,359,242,80,54,67
+PF,Sprint 2,C9,South Africa,1238,1083,622,88,50,57
+PF,Sprint 2,C10,Egypt,683,461,284,68,42,62
+PF,Sprint 2,C10,Ethiopia,525,386,221,74,42,57
+PF,Sprint 2,C10,Ghana,2147,1449,782,68,36,54
+PF,Sprint 2,C10,Kenya,2681,2076,1290,77,48,62
+PF,Sprint 2,C10,Morocco,998,616,305,62,31,50
+PF,Sprint 2,C10,Nigeria,2883,2122,1258,74,44,59
+PF,Sprint 2,C10,Rest of Africa,3958,2623,1614,66,41,62
+PF,Sprint 2,C10,Rwanda,314,210,116,67,37,55
+PF,Sprint 2,C10,South Africa,1238,956,539,77,44,56

@@ -1,0 +1,55 @@
+Program,Sprint,Cohort,Country,Enrolled,Activated,Graduated,Activation Rate,Graduation Rate,Completion Rate
+AiCE,Sprint 1,C9,Egypt,401,276,168,69,42,61
+AiCE,Sprint 1,C9,Ethiopia,59,34,17,58,29,50
+AiCE,Sprint 1,C9,Ghana,303,237,152,78,50,64
+AiCE,Sprint 1,C9,Kenya,296,226,142,76,48,63
+AiCE,Sprint 1,C9,Morocco,177,105,53,59,30,51
+AiCE,Sprint 1,C9,Nigeria,355,276,154,78,43,56
+AiCE,Sprint 1,C9,Rest of Africa,102,73,38,72,37,52
+AiCE,Sprint 1,C9,Rwanda,74,50,32,68,43,64
+AiCE,Sprint 1,C9,South Africa,57,43,25,75,44,58
+AiCE,Sprint 1,C10,Egypt,211,125,83,59,39,66
+AiCE,Sprint 1,C10,Ethiopia,14,9,5,64,36,56
+AiCE,Sprint 1,C10,Ghana,162,127,77,78,48,61
+AiCE,Sprint 1,C10,Kenya,170,135,88,79,52,65
+AiCE,Sprint 1,C10,Morocco,64,32,16,50,25,50
+AiCE,Sprint 1,C10,Nigeria,122,88,47,72,39,53
+AiCE,Sprint 1,C10,Rest of Africa,40,25,10,63,25,40
+AiCE,Sprint 1,C10,Rwanda,23,14,15,61,65,107
+AiCE,Sprint 1,C10,South Africa,37,32,25,87,68,78
+AiCE,Sprint 1,C11,Egypt,114,74,62,65,54,84
+AiCE,Sprint 1,C11,Ethiopia,33,23,13,70,39,57
+AiCE,Sprint 1,C11,Ghana,142,114,75,80,53,66
+AiCE,Sprint 1,C11,Kenya,172,139,84,81,49,60
+AiCE,Sprint 1,C11,Morocco,431,241,140,56,33,58
+AiCE,Sprint 1,C11,Nigeria,119,88,64,74,54,73
+AiCE,Sprint 1,C11,Rest of Africa,48,21,15,44,31,71
+AiCE,Sprint 1,C11,Rwanda,23,16,12,70,52,75
+AiCE,Sprint 1,C11,South Africa,25,17,13,68,52,77
+AiCE,Sprint 1,C12,Egypt,265,138,114,52,43,83
+AiCE,Sprint 1,C12,Ethiopia,33,19,13,58,39,68
+AiCE,Sprint 1,C12,Ghana,244,175,100,72,41,57
+AiCE,Sprint 1,C12,Kenya,195,109,73,56,37,67
+AiCE,Sprint 1,C12,Morocco,216,113,47,52,22,42
+AiCE,Sprint 1,C12,Nigeria,175,100,59,57,34,59
+AiCE,Sprint 1,C12,Rest of Africa,43,20,13,47,30,65
+AiCE,Sprint 1,C12,Rwanda,36,18,14,50,39,78
+AiCE,Sprint 1,C12,South Africa,29,13,8,45,28,62
+AiCE,Sprint 2,C13,Egypt,151,80,59,53,39,74
+AiCE,Sprint 2,C13,Ethiopia,29,19,9,66,31,47
+AiCE,Sprint 2,C13,Ghana,233,153,79,66,34,52
+AiCE,Sprint 2,C13,Kenya,166,100,56,60,34,56
+AiCE,Sprint 2,C13,Morocco,76,28,12,37,16,43
+AiCE,Sprint 2,C13,Nigeria,178,106,74,60,42,70
+AiCE,Sprint 2,C13,Rest of Africa,181,111,52,61,29,47
+AiCE,Sprint 2,C13,Rwanda,45,18,17,40,38,94
+AiCE,Sprint 2,C13,South Africa,35,19,14,54,40,74
+AiCE,Sprint 2,C14,Egypt,117,75,59,64,50,79
+AiCE,Sprint 2,C14,Ethiopia,48,33,21,69,44,64
+AiCE,Sprint 2,C14,Ghana,154,99,45,64,29,46
+AiCE,Sprint 2,C14,Kenya,224,145,81,65,36,56
+AiCE,Sprint 2,C14,Morocco,68,36,12,53,18,33
+AiCE,Sprint 2,C14,Nigeria,182,116,78,64,43,67
+AiCE,Sprint 2,C14,Rest of Africa,197,114,62,58,32,54
+AiCE,Sprint 2,C14,Rwanda,41,31,22,76,54,71
+AiCE,Sprint 2,C14,South Africa,39,23,12,59,31,52
