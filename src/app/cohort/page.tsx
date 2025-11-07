@@ -20,7 +20,7 @@ export default async function Cohort() {
           const totalEnrolled = rows.reduce((s, r) => s + r.Enrolled, 0);
           const totalActivated = rows.reduce((s, r) => s + r.Activated, 0);
           const totalGraduated = rows.reduce((s, r) => s + r.Graduated, 0);
-          const topCountry = rows.sort((a, b) => b.Enrolled - a.Enrolled)[0]?.Country || "N/A";
+          const topCountry = rows.sort((a, b) => b.Enrolled - a.Enrolled)[0]?.Country ?? "N/A";
 
           return (
             <Card key={cohort} title={`Cohort ${cohort}`}>
@@ -32,13 +32,13 @@ export default async function Cohort() {
                 <div>
                   <p className="text-sm opacity-70">Activation Rate</p>
                   <p className="text-2xl font-bold">
-                    {totalEnrolled > 0 ? Math.round((totalActivated / totalEnrolled) * 100) : 0}%
+                    {totalEnrolled ? Math.round((totalActivated / totalEnrolled) * 100) : 0}%
                   </p>
                 </div>
                 <div>
                   <p className="text-sm opacity-70">Graduation Rate</p>
                   <p className="text-2xl font-bold">
-                    {totalEnrolled > 0 ? Math.round((totalGraduated / totalEnrolled) * 100) : 0}%
+                    {totalEnrolled ? Math.round((totalGraduated / totalEnrolled) * 100) : 0}%
                   </p>
                 </div>
                 <div>
@@ -47,9 +47,7 @@ export default async function Cohort() {
                 </div>
                 <div>
                   <p className="text-sm opacity-70">Programs</p>
-                  <p className="text-2xl font-bold">
-                    {new Set(rows.map(r => r.Program)).size}
-                  </p>
+                  <p className="text-2xl font-bold">{new Set(rows.map(r => r.Program)).size}</p>
                 </div>
               </div>
             </Card>
