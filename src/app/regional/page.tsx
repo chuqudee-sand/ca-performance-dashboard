@@ -1,24 +1,24 @@
 // src/app/regional/page.tsx
 import Card from "@/components/Card";
 import ChartWrapper from "@/components/ChartWrapper";
-import { getAllData } from "@/lib/fetchData";
+import { getAllData, Row } from "@/lib/fetchData";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recharts";
 
 export const revalidate = 3600;
 
 export default async function Regional() {
   const { aice, pf, va } = await getAllData();
-  const all = [...aice, ...pf, ...va];
+  const all: Row[] = [...aice, ...pf, ...va];
 
   const byCountry = all.reduce((map, r) => {
-    const c = r.Country;
-    if (!map.has(c)) map.set(c, { Enrolled: 0, Activated: 0, Graduated: 0 });
-    const o = map.get(c);
-    o.Enrolled += Number(r.Enrolled);
-    o.Activated += Number(r.Activated);
-    o.Graduated += Number(r.Graduated);
+    const key = r.Country;
+    if (!map.has(key)) map.set(key, { Enrolled: 0, Activated: 0, Graduated: 0 });
+    const o = map.get(key);
+    o.Enrolled += r.Enrolled;
+    o.Activated += r.Activated;
+    o.Graduated += r.Graduated;
     return map;
-  }, new Map());
+  }, new Map<string, { Enrolled: number; Activated: number; Graduated: number }>());
 
   const data = Array.from(byCountry.entries())
     .map(([Country, d]) => ({
@@ -32,6 +32,7 @@ export default async function Regional() {
   return (
     <div className="space-y-8">
       <h1 className="text-4xl font-bold text-alxRed">Regional Performance</h1>
+
       <Card title="Top Countries">
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
