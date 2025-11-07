@@ -10,9 +10,9 @@ export default async function Sprint() {
 
   const sprintData = csat.map(row => ({
     sprint: `${row.Sprint} ${row.Cohort}`,
-    AiCE: csat.find(c => c.Program === "AiCE" && c.Sprint === row.Sprint && c.Cohort === row.Cohort)?.CSAT || null,
-    PF:   csat.find(c => c.Program === "PF"   && c.Sprint === row.Sprint && c.Cohort === row.Cohort)?.CSAT || null,
-    VA:   csat.find(c => c.Program === "VA"   && c.Sprint === row.Sprint && c.Cohort === row.Cohort)?.CSAT || null,
+    AiCE: csat.find(c => c.Program === "AiCE" && c.Sprint === row.Sprint && c.Cohort === row.Cohort)?.CSAT ?? null,
+    PF:   csat.find(c => c.Program === "PF"   && c.Sprint === row.Sprint && c.Cohort === row.Cohort)?.CSAT ?? null,
+    VA:   csat.find(c => c.Program === "VA"   && c.Sprint === row.Sprint && c.Cohort === row.Cohort)?.CSAT ?? null,
     NPS: row.NPS,
   }));
 
@@ -43,14 +43,7 @@ export default async function Sprint() {
               <XAxis dataKey="sprint" />
               <YAxis domain={[0, 100]} />
               <Tooltip />
-              <Line
-                type="monotone"
-                dataKey="NPS"
-                stroke="#FBBF24"
-                strokeWidth={4}
-                dot={{ r: 6 }}
-                name="NPS Score"
-              />
+              <Line type="monotone" dataKey="NPS" stroke="#FBBF24" strokeWidth={4} dot={{ r: 6 }} name="NPS Score" />
             </LineChart>
           </ResponsiveContainer>
         </Card>
