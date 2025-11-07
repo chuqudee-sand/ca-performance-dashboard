@@ -11,18 +11,18 @@ export default async function Regional() {
 
   const countries = [...new Set(all.map(r => r.Country))].sort();
 
-  const data = countries.map(country => {
-    const rows = all.filter(r => r.Country === country);
+  const data = countries.map(c => {
+    const rows = all.filter(r => r.Country === c);
     const enrolled = rows.reduce((s, r) => s + r.Enrolled, 0);
     const activated = rows.reduce((s, r) => s + r.Activated, 0);
     const graduated = rows.reduce((s, r) => s + r.Graduated, 0);
     return {
-      Country: country,
+      Country: c,
       Enrolled: enrolled,
       Activated: activated,
       Graduated: graduated,
-      Activation: enrolled > 0 ? Math.round((activated / enrolled) * 100) : 0,
-      Graduation: enrolled > 0 ? Math.round((graduated / enrolled) * 100) : 0,
+      Activation: enrolled ? Math.round((activated / enrolled) * 100) : 0,
+      Graduation: enrolled ? Math.round((graduated / enrolled) * 100) : 0,
     };
   }).sort((a, b) => b.Enrolled - a.Enrolled);
 
@@ -42,7 +42,7 @@ export default async function Regional() {
               </tr>
             </thead>
             <tbody>
-              {data.slice(0, 10).map((row) => (
+              {data.slice(0, 10).map(row => (
                 <tr key={row.Country} className="border-b border-gray-800">
                   <td className="py-3">{row.Country}</td>
                   <td className="py-3 text-right">{row.Enrolled.toLocaleString()}</td>
