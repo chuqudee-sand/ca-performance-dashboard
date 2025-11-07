@@ -1,8 +1,8 @@
 // src/components/ProgramCharts.tsx
 import { getAllData } from "@/lib/fetchData";
-import ProgramSprintBar from "./ProgramSprintBar";     // ← No .tsx
-import ProgramTrendLine from "./ProgramTrendLine";   // ← No .tsx
-import InsightBox from "./InsightBox";               // ← No .tsx
+import ProgramSprintBar from "./ProgramSprintBar";
+import ProgramTrendLine from "./ProgramTrendLine";
+import InsightBox from "./InsightBox";
 
 export default async function ProgramCharts() {
   const { aice, pf, va } = await getAllData();
@@ -12,7 +12,6 @@ export default async function ProgramCharts() {
     const graduated = rows.reduce((s: number, r: any) => s + Number(r.Graduated), 0);
     const avgGrad = enrolled ? Math.round((graduated / enrolled) * 100) : 0;
     const cohorts = [...new Set(rows.map((r: any) => r.Cohort))].length;
-
     return [
       `${program} has **${enrolled.toLocaleString()}** learners enrolled.`,
       `Average graduation rate: **${avgGrad}%**.`,
@@ -30,7 +29,11 @@ export default async function ProgramCharts() {
 
       <section className="grid md:grid-cols-2 gap-6">
         <ProgramTrendLine rows={aice} program="AiCE" />
-        <InsightBox title="AiCE Cohort Trend" bullets={["Graduation rate improves with newer cohorts.", "Check Sprint‑2 onboarding for any dips."]} className="self-start" />
+        <InsightBox
+          title="AiCE Cohort Trend"
+          bullets={["Graduation rate improves with newer cohorts.", "Check Sprint‑2 onboarding for any dips."]}
+          className="self-start"
+        />
       </section>
 
       {/* PF */}
@@ -41,7 +44,11 @@ export default async function ProgramCharts() {
 
       <section className="grid md:grid-cols-2 gap-6">
         <ProgramTrendLine rows={pf} program="PF" />
-        <InsightBox title="PF Cohort Trend" bullets={["PF consistently above 70% graduation.", "Strongest performer."]} className="self-start" />
+        <InsightBox
+          title="PF Cohort Trend"
+          bullets={["PF consistently above 70% graduation.", "Strongest performer."]}
+          className="self-start"
+        />
       </section>
 
       {/* VA */}
@@ -52,7 +59,11 @@ export default async function ProgramCharts() {
 
       <section className="grid md:grid-cols-2 gap-6">
         <ProgramTrendLine rows={va} program="VA" />
-        <InsightBox title="VA Cohort Trend" bullets={["Activation dip in Sprint 2 – investigate.", "Graduation improving."]} className="self-start" />
+        <InsightBox
+          title="VA Cohort Trend"
+          bullets={["Activation dip in Sprint 2 – investigate.", "Graduation improving."]}
+          className="self-start"
+        />
       </section>
     </div>
   );
