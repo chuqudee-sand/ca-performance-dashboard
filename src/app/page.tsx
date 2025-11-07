@@ -43,7 +43,7 @@ export default async function Overview() {
     { name: "VA",   value: va.reduce((s, r) => s + r.Enrolled, 0),   color: "#10B981" },
   ];
 
-  const totalForPie = programData.reduce((sum, entry) => sum + entry.value, 0);
+  const totalForPie = programData.reduce((s, e) => s + e.value, 0);
 
   const funnelData = [
     { stage: "Enrolled",  value: totalEnrolled },
@@ -59,12 +59,12 @@ export default async function Overview() {
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         <Card title="Avg Activation">
           <p className="text-3xl font-bold">
-            {totalEnrolled > 0 ? Math.round((totalActivated / totalEnrolled) * 100) : 0}%
+            {totalEnrolled ? Math.round((totalActivated / totalEnrolled) * 100) : 0}%
           </p>
         </Card>
         <Card title="Avg Completion">
           <p className="text-3xl font-bold">
-            {totalEnrolled > 0 ? Math.round((totalGraduated / totalEnrolled) * 100) : 0}%
+            {totalEnrolled ? Math.round((totalGraduated / totalEnrolled) * 100) : 0}%
           </p>
         </Card>
         <Card title="CSAT">
@@ -79,7 +79,7 @@ export default async function Overview() {
 
       {/* Charts */}
       <div className="grid md:grid-cols-2 gap-6">
-        {/* Enrollment by Program */}
+        {/* Pie */}
         <Card title="Enrollment by Program">
           <ResponsiveContainer width="100%" height={280}>
             <PieChart>
@@ -92,12 +92,12 @@ export default async function Overview() {
                 outerRadius={90}
                 label={(props: any) => {
                   const { payload, value } = props;
-                  const percent = totalForPie > 0 ? ((value as number) / totalForPie) * 100 : 0;
+                  const percent = totalForPie ? ((value as number) / totalForPie) * 100 : 0;
                   return `${payload.name} ${percent.toFixed(0)}%`;
                 }}
               >
-                {programData.map((entry, i) => (
-                  <Cell key={`cell-${i}`} fill={entry.color} />
+                {programData.map((e, i) => (
+                  <Cell key={`cell-${i}`} fill={e.color} />
                 ))}
               </Pie>
               <Tooltip formatter={(v: number) => v.toLocaleString()} />
@@ -105,7 +105,7 @@ export default async function Overview() {
           </ResponsiveContainer>
         </Card>
 
-        {/* Overall Funnel */}
+        {/* Funnel */}
         <Card title="Overall Funnel">
           <ResponsiveContainer width="100%" height={280}>
             <BarChart data={funnelData}>
