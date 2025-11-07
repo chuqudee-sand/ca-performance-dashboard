@@ -1,9 +1,10 @@
 // src/app/layout.tsx
 import "./globals.css";
+import type { Metadata } from "next";
 
-export const metadata = {
+export const metadata: Metadata = {
   title: "CA Performance Dashboard",
-  description: "ALX Career Accelerator",
+  description: "ALX Career Accelerator Metrics",
 };
 
 export default function RootLayout({
