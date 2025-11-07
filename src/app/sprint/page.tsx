@@ -1,14 +1,18 @@
 // src/app/sprint/page.tsx
 import Card from "@/components/Card";
 import ChartWrapper from "@/components/ChartWrapper";
-import { getAllData } from "@/lib/fetchData";
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
+import { getAllData, Row } from "@/lib/fetchData";
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
 
 export const revalidate = 3600;
 
 export default async function Sprint() {
   const { csat } = await getAllData();
-  const data = csat.map(r => ({ sprint: `${r.Sprint} ${r.Cohort}`, CSAT: r.CSAT, NPS: r.NPS }));
+  const data = csat.map(r => ({
+    sprint: `${r.Sprint} ${r.Cohort}`,
+    CSAT: r.CSAT,
+    NPS: r.NPS,
+  }));
 
   return (
     <div className="space-y-8">
