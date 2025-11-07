@@ -1,8 +1,10 @@
+// src/app/layout.tsx
 import "./globals.css";
+import AppProvider from "@/components/AppProvider";
 
 export const metadata = {
   title: "CA Performance Dashboard",
-  description: "ALX Career Accelerator Program Metrics",
+  description: "ALX Career Accelerator metrics",
 };
 
 export default function RootLayout({
@@ -13,14 +15,8 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark">
       <body className="bg-darkBg text-darkText p-6 min-h-screen">
-        <nav className="flex gap-6 mb-10 text-lg border-b border-alxRed pb-4">
-          <a href="/" className="hover:text-alxRed transition-colors">Overview</a>
-          <a href="/programs" className="hover:text-alxRed transition-colors">Programs</a>
-          <a href="/regional" className="hover:text-alxRed transition-colors">Regional Performance</a>
-          <a href="/sprint" className="hover:text-alxRed transition-colors">Sprint Trend</a>
-          <a href="/cohort" className="hover:text-alxRed transition-colors">Cohort Explorer</a>
-        </nav>
-        <main>{children}</main>
+        {/* Client‑side provider – only file that uses React Context */}
+        <AppProvider>{children}</AppProvider>
       </body>
     </html>
   );
