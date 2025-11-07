@@ -34,9 +34,8 @@ export default function ProgramTrendLine({
   program: string;
 }) {
   const data = useMemo(() => {
-    return rows.map((r) => ({
+    return rows.map(r => ({
       cohort: r.Cohort,
-      // <-- ONLY the exact CSV header (space!)
       grad: Number(r["Graduation Rate"] ?? 0),
       completion: Number(r["Completion Rate"] ?? 0),
     }));
