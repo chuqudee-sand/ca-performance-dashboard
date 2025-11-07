@@ -35,7 +35,7 @@ export default function ProgramSprintBar({
 }) {
   const aggregated = useMemo(() => {
     const map = new Map<string, any>();
-    rows.forEach((r) => {
+    rows.forEach(r => {
       const s = String(r.Sprint);
       const en = Number(r.Enrolled ?? 0);
       const ac = Number(r.Activated ?? 0);
@@ -46,7 +46,7 @@ export default function ProgramSprintBar({
       obj.Activated += ac;
       obj.Graduated += gr;
     });
-    return Array.from(map.values()).map((d) => ({
+    return Array.from(map.values()).map(d => ({
       sprint: d.sprint,
       ActivationRate: d.Activated === 0 ? 0 : Number(((d.Activated / d.Enrolled) * 100).toFixed(1)),
       GraduationRate: d.Enrolled === 0 ? 0 : Number(((d.Graduated / d.Enrolled) * 100).toFixed(1)),
