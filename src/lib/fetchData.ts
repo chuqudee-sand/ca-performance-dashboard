@@ -22,20 +22,21 @@ const DATA_DIR = path.join(process.cwd(), "data");
 
 async function fetchCSV(file: string): Promise<Row[]> {
   const filePath = path.join(DATA_DIR, `${file}.csv`);
-
   let text: string;
 
-  if (process.env.NODE_ENV === "production") {
-    // Vercel: use fetch (served as static asset)
-    const res = await fetch(`/data/${file}.csv`, { next: { revalidate: 3600 } });
-    if (!res.ok) throw new Error(`Failed to load /data/${file}.csv`);
-    text = await res.text();
-  } else {
-    // Local + Build: read from filesystem
+  // FORCE fs during build and dev
+  if (process.env.NODE_ENV !== "production") {
     if (!fs.existsSync(filePath)) {
-      throw new Error(`File not found: ${filePath}`);
+      throw new Error(`CSV file not found: ${filePath}`);
     }
     text = fs.readFileSync(filePath, "utf-8");
+  } else {
+    // Only in Vercel production: use fetch
+    const res = await fetch(`/data/${file}.csv`, {
+      cache: "force-cache",
+    });
+    if (!res.ok) throw new Error(`Failed to fetch /data/${file}.csv`);
+    text = await res.text();
   }
 
   const parsed = parse(text, { columns: true, skip_empty_lines: true });
