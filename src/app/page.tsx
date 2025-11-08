@@ -1,6 +1,6 @@
 // src/app/page.tsx
 import Card from "@/components/Card";
-import ChartWrapper from "@/components/ChartWrapper";
+import ClientChart from "@/components/ClientChart";
 import { getAllData, Row } from "@/lib/fetchData";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from "recharts";
 
@@ -28,7 +28,6 @@ export default async function Overview() {
     { stage: "Graduated", value: graduated },
   ];
 
-  // Fixed lines
   const avgCSAT = csat.length 
     ? (csat.reduce((s, r) => s + (r.CSAT ?? 0), 0) / csat.length).toFixed(1) 
     : "0";
@@ -57,7 +56,7 @@ export default async function Overview() {
 
       <div className="grid md:grid-cols-2 gap-6">
         <Card title="Enrollment by Program">
-          <ChartWrapper>
+          <ClientChart>
             <ResponsiveContainer width="100%" height={280}>
               <PieChart>
                 <Pie
@@ -79,11 +78,11 @@ export default async function Overview() {
                 <Tooltip formatter={(v: number) => v.toLocaleString()} />
               </PieChart>
             </ResponsiveContainer>
-          </ChartWrapper>
+          </ClientChart>
         </Card>
 
         <Card title="Overall Funnel">
-          <ChartWrapper>
+          <ClientChart>
             <ResponsiveContainer width="100%" height={280}>
               <BarChart data={funnelData}>
                 <XAxis dataKey="stage" />
@@ -92,7 +91,7 @@ export default async function Overview() {
                 <Bar dataKey="value" fill="#E22D2D" radius={[8, 8, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
-          </ChartWrapper>
+          </ClientChart>
         </Card>
       </div>
     </div>
