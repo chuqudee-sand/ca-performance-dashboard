@@ -12,8 +12,10 @@ export default async function Regional() {
 
   const byCountry = all.reduce((map, r) => {
     const key = r.Country;
-    if (!map.has(key)) map.set(key, { Enrolled: 0, Activated: 0, Graduated: 0 });
-    const o = map.get(key);
+    if (!map.has(key)) {
+      map.set(key, { Enrolled: 0, Activated: 0, Graduated: 0 });
+    }
+    const o = map.get(key)!; // ← Add ! here
     o.Enrolled += r.Enrolled;
     o.Activated += r.Activated;
     o.Graduated += r.Graduated;
