@@ -1,8 +1,7 @@
 // src/app/regional/page.tsx
 import Card from "@/components/Card";
-import ClientChart from "@/components/ClientChart";
+import RegionalFunnelChart from "@/components/Charts/RegionalFunnelChart";
 import { getAllData, Row } from "@/lib/fetchData";
-import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recharts";
 
 export const revalidate = 3600;
 
@@ -12,9 +11,7 @@ export default async function Regional() {
 
   const byCountry = all.reduce((map, r) => {
     const key = r.Country;
-    if (!map.has(key)) {
-      map.set(key, { Enrolled: 0, Activated: 0, Graduated: 0 });
-    }
+    if (!map.has(key)) map.set(key, { Enrolled: 0, Activated: 0, Graduated: 0 });
     const o = map.get(key)!;
     o.Enrolled += r.Enrolled;
     o.Activated += r.Activated;
@@ -61,18 +58,7 @@ export default async function Regional() {
       </Card>
 
       <Card title="Funnel (Top 8)">
-        <ClientChart>
-          <ResponsiveContainer width="100%" height={400}>
-            <BarChart data={data.slice(0, 8)}>
-              <XAxis dataKey="Country" angle={-45} textAnchor="end" height={80} />
-              <YAxis />
-              <Tooltip formatter={(v: number) => v.toLocaleString()} />
-              <Bar dataKey="Enrolled" fill="#4B5563" />
-              <Bar dataKey="Activated" fill="#10B981" />
-              <Bar dataKey="Graduated" fill="#E22D2D" />
-            </BarChart>
-          </ResponsiveContainer>
-        </ClientChart>
+        <RegionalFunnelChart data={data.slice(0, 8)} />
       </Card>
     </div>
   );
