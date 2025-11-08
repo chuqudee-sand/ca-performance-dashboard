@@ -1,8 +1,4 @@
 // src/lib/fetchData.ts
-import { parse } from "csv-parse/sync";
-import fs from "fs";
-import path from "path";
-
 export type Row = {
   Program: string;
   Sprint: string;
@@ -18,29 +14,14 @@ export type Row = {
   NPS?: number;
 };
 
-const DATA_DIR = path.join(process.cwd(), "data");
+// Import JSON directly — works in build, dev, prod
+import aiceData from "../../data/aice.json";
+import pfData from "../../data/pf.json";
+import vaData from "../../data/va.json";
+import csatData from "../../data/csat.json";
 
-async function fetchCSV(file: string): Promise<Row[]> {
-  const filePath = path.join(DATA_DIR, `${file}.csv`);
-  let text: string;
-
-  // FORCE fs during build and dev
-  if (process.env.NODE_ENV !== "production") {
-    if (!fs.existsSync(filePath)) {
-      throw new Error(`CSV file not found: ${filePath}`);
-    }
-    text = fs.readFileSync(filePath, "utf-8");
-  } else {
-    // Only in Vercel production: use fetch
-    const res = await fetch(`/data/${file}.csv`, {
-      cache: "force-cache",
-    });
-    if (!res.ok) throw new Error(`Failed to fetch /data/${file}.csv`);
-    text = await res.text();
-  }
-
-  const parsed = parse(text, { columns: true, skip_empty_lines: true });
-  return parsed.map((r: any) => ({
+const normalize = (rows: any[]): Row[] => 
+  rows.map(r => ({
     Program: String(r.Program ?? ""),
     Sprint: String(r.Sprint ?? ""),
     Cohort: String(r.Cohort ?? ""),
@@ -54,14 +35,12 @@ async function fetchCSV(file: string): Promise<Row[]> {
     CSAT: Number(r.CSAT) || 0,
     NPS: Number(r.NPS) || 0,
   }));
-}
 
 export async function getAllData() {
-  const [aice, pf, va, csat] = await Promise.all([
-    fetchCSV("aice"),
-    fetchCSV("pf"),
-    fetchCSV("va"),
-    fetchCSV("csat"),
-  ]);
-  return { aice, pf, va, csat };
+  return {
+    aice: normalize(aiceData),
+    pf: normalize(pfData),
+    va: normalize(vaData),
+    csat: normalize(csatData),
+  };
 }
