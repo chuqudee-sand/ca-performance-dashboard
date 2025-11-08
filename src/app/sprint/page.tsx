@@ -1,79 +1,52 @@
-// src/app/regional/page.tsx
+// src/app/sprint/page.tsx
 import Card from "@/components/Card";
 import ClientChart from "@/components/ClientChart";
 import { getAllData, Row } from "@/lib/fetchData";
-import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recharts";
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
 
 export const revalidate = 3600;
 
-export default async function Regional() {
-  const { aice, pf, va } = await getAllData();
-  const all: Row[] = [...aice, ...pf, ...va];
-
-  const byCountry = all.reduce((map, r) => {
-    const key = r.Country;
-    if (!map.has(key)) {
-      map.set(key, { Enrolled: 0, Activated: 0, Graduated: 0 });
-    }
-    const o = map.get(key)!;
-    o.Enrolled += r.Enrolled;
-    o.Activated += r.Activated;
-    o.Graduated += r.Graduated;
-    return map;
-  }, new Map<string, { Enrolled: number; Activated: number; Graduated: number }>());
-
-  const data = Array.from(byCountry.entries())
-    .map(([Country, d]) => ({
-      Country,
-      ...d,
-      Activation: d.Enrolled ? Math.round((d.Activated / d.Enrolled) * 100) : 0,
-      Graduation: d.Enrolled ? Math.round((d.Graduated / d.Enrolled) * 100) : 0,
-    }))
-    .sort((a, b) => b.Enrolled - a.Enrolled);
+export default async function Sprint() {
+  const { csat } = await getAllData();
+  const data = csat.map(r => ({
+    sprint: `${r.Sprint} ${r.Cohort}`,
+    CSAT: r.CSAT ?? 0,
+    NPS: r.NPS ?? 0,
+  }));
 
   return (
     <div className="space-y-8">
-      <h1 className="text-4xl font-bold text-alxRed">Regional Performance</h1>
+      <h1 className="text-4xl font-bold text-alxRed">Sprint Trends</h1>
 
-      <Card title="Top Countries">
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead className="border-b border-gray-700">
-              <tr>
-                <th className="text-left py-2">Country</th>
-                <th className="text-right py-2">Enrolled</th>
-                <th className="text-right py-2">Activation</th>
-                <th className="text-right py-2">Graduation</th>
-              </tr>
-            </thead>
-            <tbody>
-              {data.slice(0, 10).map(r => (
-                <tr key={r.Country} className="border-b border-gray-800">
-                  <td className="py-2">{r.Country}</td>
-                  <td className="text-right">{r.Enrolled.toLocaleString()}</td>
-                  <td className="text-right">{r.Activation}%</td>
-                  <td className="text-right">{r.Graduation}%</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </Card>
+      <div className="grid md:grid-cols-2 gap-6">
+        <Card title="CSAT Trend">
+          <ClientChart>
+            <ResponsiveContainer width="100%" height={300}>
+              <LineChart data={data}>
+                <CartesianGrid strokeDasharray="3 3" stroke="#333" />
+                <XAxis dataKey="sprint" stroke="#9CA3AF" />
+                <YAxis domain={[0, 5]} stroke="#9CA3AF" />
+                <Tooltip />
+                <Line type="monotone" dataKey="CSAT" stroke="#E22D2D" strokeWidth={3} dot />
+              </LineChart>
+            </ResponsiveContainer>
+          </ClientChart>
+        </Card>
 
-      <Card title="Funnel (Top 8)">
-        <ClientChart>
-          <ResponsiveContainer width="100%" height={400}>
-            <BarChart data={data.slice(0, 8)}>
-              <XAxis dataKey="Country" angle={-45} textAnchor="end" height={80} />
-              <YAxis />
-              <Tooltip formatter={(v: number) => v.toLocaleString()} />
-              <Bar dataKey="Enrolled" fill="#4B5563" />
-              <Bar dataKey="Activated" fill="#10B981" />
-              <Bar dataKey="Graduated" fill="#E22D2D" />
-            </BarChart>
-          </ResponsiveContainer>
-        </ClientChart>
-      </Card>
+        <Card title="NPS Trend">
+          <ClientChart>
+            <ResponsiveContainer width="100%" height={300}>
+              <LineChart data={data}>
+                <CartesianGrid strokeDasharray="3 3" stroke="#333" />
+                <XAxis dataKey="sprint" stroke="#9CA3AF" />
+                <YAxis domain={[0, 100]} stroke="#9CA3AF" />
+                <Tooltip />
+                <Line type="monotone" dataKey="NPS" stroke="#FBBF24" strokeWidth={3} dot />
+              </LineChart>
+            </ResponsiveContainer>
+          </ClientChart>
+        </Card>
+      </div>
     </div>
   );
 }
