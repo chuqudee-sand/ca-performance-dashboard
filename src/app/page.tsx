@@ -28,8 +28,13 @@ export default async function Overview() {
     { stage: "Graduated", value: graduated },
   ];
 
-  const avgCSAT = csat.length ? (csat.reduce((s, r) => s + r.CSAT, 0) / csat.length).toFixed(1) : "0";
-  const avgNPS = csat.length ? Math.round(csat.reduce((s, r) => s + r.NPS, 0) / csat.length) : 0;
+  // Fixed lines
+  const avgCSAT = csat.length 
+    ? (csat.reduce((s, r) => s + (r.CSAT ?? 0), 0) / csat.length).toFixed(1) 
+    : "0";
+  const avgNPS = csat.length 
+    ? Math.round(csat.reduce((s, r) => s + (r.NPS ?? 0), 0) / csat.length) 
+    : 0;
 
   return (
     <div className="space-y-8">
