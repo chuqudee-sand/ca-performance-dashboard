@@ -1,29 +1,35 @@
 // src/app/layout.tsx
-import "./globals.css";
+import type { Metadata } from "next";
+import { Gabarito } from "next/font/google";
+import { SideNav } from "@/components/SideNav";
+import { siteConfig } from "@/config/site";
+import { cn } from "@/lib/utils";
+import "@/style/globals.css";
+import { Providers } from "./providers";
 
-export const metadata = {
-  title: "CA Performance Dashboard",
-  description: "ALX Career Accelerator",
+const gabarito = Gabarito({ subsets: ["latin"], variable: "--font-gabarito" });
+
+export const metadata: Metadata = {
+  title: siteConfig.title,
+  description: siteConfig.description,
 };
 
 export default function RootLayout({
   children,
-}: {
+}: Readonly<{
   children: React.ReactNode;
-}) {
+}>) {
   return (
-    <html lang="en" className="dark">
-      <body className="bg-darkBg text-darkText min-h-screen p-6">
-        <div className="max-w-7xl mx-auto">
-          <nav className="flex gap-6 mb-10 text-lg border-b border-alxRed pb-4">
-            <a href="/" className="hover:text-alxRed transition-colors">Overview</a>
-            <a href="/regional" className="hover:text-alxRed transition-colors">Regional</a>
-            <a href="/sprint" className="hover:text-alxRed transition-colors">Sprint</a>
-            <a href="/cohort" className="hover:text-alxRed transition-colors">Cohort</a>
-            <a href="/programs" className="hover:text-alxRed transition-colors">Programs</a>
-          </nav>
-          {children}
-        </div>
+    <html lang="en" suppressHydrationWarning>
+      <body className={cn("bg-background font-sans", gabarito.variable)}>
+        <Providers>
+          <div className="flex min-h-screen">
+            <SideNav />
+            <main className="flex-1 overflow-auto p-6 lg:p-8">
+              {children}
+            </main>
+          </div>
+        </Providers>
       </body>
     </html>
   );
