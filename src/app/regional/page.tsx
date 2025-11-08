@@ -1,6 +1,6 @@
 // src/app/regional/page.tsx
 import Card from "@/components/Card";
-import ChartWrapper from "@/components/ChartWrapper";
+import ClientChart from "@/components/ClientChart";
 import { getAllData, Row } from "@/lib/fetchData";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recharts";
 
@@ -15,7 +15,7 @@ export default async function Regional() {
     if (!map.has(key)) {
       map.set(key, { Enrolled: 0, Activated: 0, Graduated: 0 });
     }
-    const o = map.get(key)!; // ← Add ! here
+    const o = map.get(key)!;
     o.Enrolled += r.Enrolled;
     o.Activated += r.Activated;
     o.Graduated += r.Graduated;
@@ -61,18 +61,18 @@ export default async function Regional() {
       </Card>
 
       <Card title="Funnel (Top 8)">
-        <ChartWrapper>
+        <ClientChart>
           <ResponsiveContainer width="100%" height={400}>
             <BarChart data={data.slice(0, 8)}>
               <XAxis dataKey="Country" angle={-45} textAnchor="end" height={80} />
               <YAxis />
-              <Tooltip />
+              <Tooltip formatter={(v: number) => v.toLocaleString()} />
               <Bar dataKey="Enrolled" fill="#4B5563" />
               <Bar dataKey="Activated" fill="#10B981" />
               <Bar dataKey="Graduated" fill="#E22D2D" />
             </BarChart>
           </ResponsiveContainer>
-        </ChartWrapper>
+        </ClientChart>
       </Card>
     </div>
   );
