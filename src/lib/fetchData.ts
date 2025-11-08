@@ -1,5 +1,7 @@
 // src/lib/fetchData.ts
 import { parse } from "csv-parse/sync";
+import fs from "fs";
+import path from "path";
 
 export type Row = {
   Program: string;
@@ -16,13 +18,26 @@ export type Row = {
   NPS?: number;
 };
 
-const BASE_PATH = "/data";
+const DATA_DIR = path.join(process.cwd(), "data");
 
 async function fetchCSV(file: string): Promise<Row[]> {
-  const url = `${BASE_PATH}/${file}.csv`; // ← Must match actual filename
-  const res = await fetch(url, { next: { revalidate: 3600 } });
-  if (!res.ok) throw new Error(`Failed to load ${url}`);
-  const text = await res.text();
+  const filePath = path.join(DATA_DIR, `${file}.csv`);
+
+  let text: string;
+
+  if (process.env.NODE_ENV === "production") {
+    // Vercel: use fetch (served as static asset)
+    const res = await fetch(`/data/${file}.csv`, { next: { revalidate: 3600 } });
+    if (!res.ok) throw new Error(`Failed to load /data/${file}.csv`);
+    text = await res.text();
+  } else {
+    // Local + Build: read from filesystem
+    if (!fs.existsSync(filePath)) {
+      throw new Error(`File not found: ${filePath}`);
+    }
+    text = fs.readFileSync(filePath, "utf-8");
+  }
+
   const parsed = parse(text, { columns: true, skip_empty_lines: true });
   return parsed.map((r: any) => ({
     Program: String(r.Program ?? ""),
@@ -42,10 +57,10 @@ async function fetchCSV(file: string): Promise<Row[]> {
 
 export async function getAllData() {
   const [aice, pf, va, csat] = await Promise.all([
-    fetchCSV("aice"),   // ← Must be "aice.csv"
-    fetchCSV("pf"),     // ← Must be "pf.csv"
-    fetchCSV("va"),     // ← Must be "va.csv"
-    fetchCSV("csat"),   // ← Must be "csat.csv"
+    fetchCSV("aice"),
+    fetchCSV("pf"),
+    fetchCSV("va"),
+    fetchCSV("csat"),
   ]);
   return { aice, pf, va, csat };
 }
