@@ -21,7 +21,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={cn("bg-background font-sans", gabarito.variable)}>
+      <body className={cn(
+        "min-h-screen bg-background text-foreground antialiased",
+        gabarito.variable,
+        "font-sans"
+      )}>
         <Providers>
           <div className="flex min-h-screen">
             <SideNav />
