@@ -1,11 +1,9 @@
 // next.config.js
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: "standalone", // Ensures static assets are included
-  experimental: {
-    // Optional: improve static generation
-    isrMemoryCacheSize: 0,
-  },
+  output: "standalone",
+  // Remove invalid experimental flag
+  // experimental: { isrMemoryCacheSize: 0 } ← DELETE THIS LINE
 };
 
 module.exports = nextConfig;
