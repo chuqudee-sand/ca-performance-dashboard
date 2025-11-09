@@ -1,8 +1,9 @@
 // src/app/page.tsx
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { getAllData, Row } from "@/lib/fetchData";
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell } from "recharts";
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
 import { GraduationCap, Users, Target, ThumbsUp, TrendingUp } from "lucide-react";
+import { cn } from "@/lib/utils"; // ← ADD THIS LINE
 
 export const revalidate = 3600;
 
