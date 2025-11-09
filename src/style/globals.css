@@ -3,6 +3,7 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Define CSS variables FIRST — before any @apply */
 @layer base {
   :root {
     --background: 222.2 84% 4.9%;
@@ -28,6 +29,7 @@
   }
 }
 
+/* Now safely apply border-border */
 @layer base {
   * {
     @apply border-border;
