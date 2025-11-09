@@ -3,7 +3,7 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Define CSS variables FIRST — before any @apply */
+/* Define CSS variables in :root – Tailwind will generate the classes */
 @layer base {
   :root {
     --background: 222.2 84% 4.9%;
@@ -19,7 +19,7 @@
     --muted: 217.2 32.6% 17.5%;
     --muted-foreground: 215 20.2% 65.1%;
     --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
+    --accenture: 210 40% 98%;
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 210 40% 98%;
     --border: 217.2 32.6% 13.5%;
@@ -29,11 +29,9 @@
   }
 }
 
-/* Now safely apply border-border */
+/* DO NOT USE @apply border-border HERE — it breaks Vercel build */
+/* Instead, apply border directly in components */
 @layer base {
-  * {
-    @apply border-border;
-  }
   body {
     @apply bg-background text-foreground;
   }
